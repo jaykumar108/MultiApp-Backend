@@ -1,0 +1,62 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const authRoutes = require("./routes/AuthRoutes");
+
+// Load .env config
+dotenv.config();
+
+// Initialize express
+const app = express();
+
+// Middleware
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  credentials: true
+}));
+app.use(express.json({ limit: '10mb' }));
+app.use(cookieParser());
+
+// Error handling middleware for JSON parsing errors
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({ 
+      message: "Invalid JSON format in request body",
+      error: "Please check your JSON syntax"
+    });
+  }
+  next();
+});
+
+// Root route to check server status
+app.get("/", (req, res) => {
+  res.json({
+    message: "Server is running",
+    status: "MongoDB connected",
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Routes
+app.use("/api/auth", authRoutes);
+
+// Connect MongoDB and Start Server
+const PORT = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI;
+
+mongoose
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("MongoDB connected");
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error(" MongoDB connection error:", err.message);
+  });
