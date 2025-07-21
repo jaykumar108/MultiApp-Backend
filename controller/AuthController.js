@@ -215,3 +215,29 @@ exports.logout = async (req, res) => {
     res.status(500).json({ message: "Logout failed", error: error.message });
   }
 };
+
+// Get user profile
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password -otp');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({
+      message: 'User profile fetched successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        city: user.city,
+        mobile: user.mobile,
+        role: user.role,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      }
+    });
+  } catch (error) {
+    console.error('Get profile error:', error);
+    res.status(500).json({ message: 'Failed to fetch profile', error: error.message });
+  }
+};
