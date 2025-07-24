@@ -22,9 +22,11 @@ const sendEmail = async ({ to, subject, text }) => {
       subject,
       text
     });
-    console.log("✅ Email sent to", to);
+    console.log("Email sent to", to);
   } catch (error) {
-    console.error("❌ Failed to send email:", error.message);
+
+    console.error("Failed to send email:", error.message);
+    
     if (error.code === 'EAUTH') {
       throw new Error("Invalid SMTP credentials. Please check your Brevo API key and email.");
     } else if (error.code === 'ECONNECTION') {
