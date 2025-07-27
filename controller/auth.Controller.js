@@ -7,7 +7,7 @@ const sendEmail = require("../services/auth.Email"); // nodemailer logic
 exports.register = async (req, res) => {
   try {
     const { name, email, city, mobile, password, confirmPassword, role } = req.body;
-
+    
     // Validate required fields
     if (!name || !email || !city || !password || !confirmPassword) {
       return res.status(400).json({ 
@@ -134,14 +134,15 @@ exports.verifyOTP = async (req, res) => {
 
     res.status(200).json({ 
       message: "Login successful", 
+      token, // <-- include token in response body
       user: {
         id: user._id,
-        // name: user.name,
-        // email: user.email,
-        // city: user.city,
-        // mobile: user.mobile,
-        // role: user.role,
-        // createdAt: user.createdAt
+        name: user.name,
+        email: user.email,
+        city: user.city,
+        mobile: user.mobile,
+        role: user.role,
+        createdAt: user.createdAt
       }
     });
   } catch (error) {
@@ -183,6 +184,7 @@ exports.loginWithPassword = async (req, res) => {
 
     res.status(200).json({ 
       message: "Login successful", 
+      token, // <-- include token in response body
       user: {
         id: user._id,
         name: user.name,
@@ -239,5 +241,32 @@ exports.getProfile = async (req, res) => {
   } catch (error) {
     console.error('Get profile error:', error);
     res.status(500).json({ message: 'Failed to fetch profile', error: error.message });
+  }
+};
+
+// Validate token and return user details
+exports.validateToken = async (req, res) => {
+  try {
+    // req.user is set by authMiddleware
+    const user = await User.findById(req.user.id).select('-password -otp');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({
+      message: 'Token valid',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        city: user.city,
+        mobile: user.mobile,
+        role: user.role,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      }
+    });
+  } catch (error) {
+    console.error('Validate token error:', error);
+    res.status(401).json({ message: 'Invalid token', error: error.message });
   }
 };

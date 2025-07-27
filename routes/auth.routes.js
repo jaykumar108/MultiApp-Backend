@@ -12,6 +12,7 @@ router.post("/login", authController.loginWithPassword);
 // Protected routes (authentication required)
     router.post("/logout", authMiddleware, authController.logout);
 router.get("/profile", authMiddleware, requireUser, authController.getProfile);
+router.get("/validate-token", authMiddleware, authController.validateToken);
 // Example: router.get("/profile", authMiddleware, requireUser, authController.getProfile);
 // Example: router.get("/admin/users", authMiddleware, requireAdmin, authController.getAllUsers);
 
