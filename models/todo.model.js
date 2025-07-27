@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose');
 
 const todoSchema = new mongoose.Schema({
         user:{
@@ -37,7 +37,13 @@ const todoSchema = new mongoose.Schema({
             type: Boolean,
             default: false
         },
-       
+        ip: {
+            type: String
+        },
+        userAgent: {
+            type: String
+        }
+
 }, {timestamps: true});
 
 const Todo = mongoose.model('Todo', todoSchema);
