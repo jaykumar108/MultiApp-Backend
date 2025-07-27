@@ -9,6 +9,7 @@ router.post("/send-otp", authController.sendOTP);
 router.post("/verify-otp", authController.verifyOTP);
 router.post("/login", authController.loginWithPassword);
 
+
 // Protected routes (authentication required)
     router.post("/logout", authMiddleware, authController.logout);
 router.get("/profile", authMiddleware, requireUser, authController.getProfile);
