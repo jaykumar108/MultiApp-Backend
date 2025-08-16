@@ -142,7 +142,6 @@ exports.verifyOTP = async (req, res) => {
         city: user.city,
         mobile: user.mobile,
         role: user.role,
-        moduleAccess: user.getActiveModuleAccess(),
         createdAt: user.createdAt
       }
     });
@@ -193,7 +192,6 @@ exports.loginWithPassword = async (req, res) => {
         city: user.city,
         mobile: user.mobile,
         role: user.role,
-        moduleAccess: user.getActiveModuleAccess(),
         createdAt: user.createdAt
       }
     });
@@ -236,7 +234,6 @@ exports.getProfile = async (req, res) => {
         city: user.city,
         mobile: user.mobile,
         role: user.role,
-        moduleAccess: user.getActiveModuleAccess(),
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       }
@@ -264,7 +261,6 @@ exports.validateToken = async (req, res) => {
         city: user.city,
         mobile: user.mobile,
         role: user.role,
-        moduleAccess: user.getActiveModuleAccess(),
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       }
