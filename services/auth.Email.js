@@ -20,18 +20,18 @@ const sendEmail = async ({ to, subject, text, html }) => {
     const defaultHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
         <div style="background: #2d3748; color: #fff; padding: 24px 32px; text-align: center;">
-          <h1 style="margin: 0; font-size: 2rem;">MultiApp</h1>
+          <h1 style="margin: 0; font-size: 2rem;">Cloree.com Backend</h1>
         </div>
         <div style="padding: 32px 32px 24px 32px; background: #fafafa; color: #333;">
           <p style="font-size: 1.1rem; line-height: 1.6; margin: 0;">${text || ''}</p>
         </div>
         <div style="background: #f1f1f1; color: #888; padding: 16px 32px; text-align: center; font-size: 0.95rem;">
-          <p style="margin: 0;">&copy; ${new Date().getFullYear()} MultiApp. All rights reserved.</p>
+          <p style="margin: 0;">&copy; ${new Date().getFullYear()} Cloree.com Backend. All rights reserved.</p>
         </div>
       </div>
     `;
     await transporter.sendMail({
-      from: `"MultiApp" <${process.env.SMTP_EMAIL}>`,
+      from: `"Cloree.com Backend" <${process.env.SMTP_EMAIL}>`,
       to,
       subject,
       text,
