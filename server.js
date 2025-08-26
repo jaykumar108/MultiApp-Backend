@@ -48,7 +48,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/todos", todoRoutes);
-app.use("/api/expense", expenseRoutes);
+app.use("/api/expenses", expenseRoutes);
 
 
 
