@@ -235,6 +235,7 @@ exports.getProfile = async (req, res) => {
   }
 };
 
+
 // Validate token and return user details
 exports.validateToken = async (req, res) => {
   try {
