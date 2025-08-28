@@ -14,9 +14,15 @@ dotenv.config();
 const app = express();
 
 // Middleware
-// Updated CORS configuration - Allow all origins
+// CORS configuration for frontend
+const corsOrigins = process.env.CORS_ORIGINS 
+  ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
+  : process.env.NODE_ENV === 'production' 
+    ? ['http://localhost:5173'] 
+    : ['http://localhost:3000'];
+
 app.use(cors({
-  origin: true,
+  origin: corsOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
