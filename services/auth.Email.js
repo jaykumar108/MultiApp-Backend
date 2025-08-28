@@ -31,7 +31,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
       </div>
     `;
     await transporter.sendMail({
-      from: `"MultiApp" <${process.env.SMTP_EMAIL}>`,
+      from: `"${process.env.FROM_NAME}" <${process.env.SMTP_EMAIL}>`,
       to,
       subject,
       text,
