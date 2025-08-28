@@ -134,15 +134,12 @@ exports.verifyOTP = async (req, res) => {
 
     res.status(200).json({ 
       message: "Login successful", 
-      token, // <-- include token in response body
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
         city: user.city,
         mobile: user.mobile,
-        role: user.role,
-        createdAt: user.createdAt
       }
     });
   } catch (error) {
@@ -184,15 +181,12 @@ exports.loginWithPassword = async (req, res) => {
 
     res.status(200).json({ 
       message: "Login successful", 
-      token, // <-- include token in response body
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
         city: user.city,
-        mobile: user.mobile,
-        role: user.role,
-        createdAt: user.createdAt
+        mobile: user.mobile
       }
     });
   } catch (error) {
@@ -233,9 +227,6 @@ exports.getProfile = async (req, res) => {
         email: user.email,
         city: user.city,
         mobile: user.mobile,
-        role: user.role,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
       }
     });
   } catch (error) {
@@ -260,9 +251,6 @@ exports.validateToken = async (req, res) => {
         email: user.email,
         city: user.city,
         mobile: user.mobile,
-        role: user.role,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
       }
     });
   } catch (error) {
