@@ -1,5 +1,6 @@
-const nodemailer = require("nodemailer");
-require("dotenv").config(); // Load environment variables
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config(); // Load environment variables
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -41,7 +42,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
   } catch (error) {
 
     console.error("Failed to send email:", error.message);
-    
+
     if (error.code === 'EAUTH') {
       throw new Error("Invalid SMTP credentials. Please check your Brevo API key and email.");
     } else if (error.code === 'ECONNECTION') {
@@ -52,4 +53,4 @@ const sendEmail = async ({ to, subject, text, html }) => {
   }
 };
 
-module.exports = sendEmail;
+export default sendEmail;

@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
       "Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9"
     ],
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         if (!v) return true; // Allow null/empty values
         return /^[6-9]\d{9}$/.test(v);
       },
@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
     minlength: [6, "Password must be at least 6 characters long"],
     maxlength: [128, "Password cannot exceed 128 characters"],
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         // Password must contain at least one letter and one number
         return /^(?=.*[A-Za-z])(?=.*\d)/.test(v);
       },
@@ -74,7 +74,7 @@ const userSchema = new mongoose.Schema({
     expiresAt: {
       type: Date,
       validate: {
-        validator: function(v) {
+        validator: function (v) {
           if (!v) return true; // Allow null values
           return v > new Date();
         },
@@ -99,4 +99,5 @@ userSchema.methods.comparePassword = function (inputPassword) {
 };
 
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+export default User;

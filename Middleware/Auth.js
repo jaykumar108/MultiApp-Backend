@@ -1,10 +1,10 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
-const authMiddleware = (req, res, next) => {
+export const authMiddleware = (req, res, next) => {
   try {
     // Get token from cookie first, then from Authorization header as fallback
     let token = req.cookies.token;
-    
+
     if (!token) {
       const authHeader = req.headers.authorization;
       if (authHeader && authHeader.startsWith("Bearer ")) {
@@ -17,7 +17,7 @@ const authMiddleware = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     // Verify that role exists in token
     if (!decoded.role) {
       return res.status(401).json({ message: "Invalid token: Role not found" });
@@ -35,8 +35,11 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
+// Alias for authMiddleware to match user request
+export const authToken = authMiddleware;
+
 // Role-based authorization middleware
-const requireRole = (allowedRoles) => {
+export const requireRole = (allowedRoles) => {
   return (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({ message: "Authentication required" });
@@ -46,7 +49,7 @@ const requireRole = (allowedRoles) => {
     const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
 
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ 
+      return res.status(403).json({
         message: "Access denied: Insufficient permissions",
         required: roles,
         current: req.user.role
@@ -58,14 +61,6 @@ const requireRole = (allowedRoles) => {
 };
 
 // Specific role middlewares
-const requireAdmin = requireRole('admin');
-const requireUser = requireRole('user');
-const requireAnyRole = requireRole(['user', 'admin']);
-
-module.exports = {
-  authMiddleware,
-  requireRole,
-  requireAdmin,
-  requireUser,
-  requireAnyRole
-};
+export const requireAdmin = requireRole('admin');
+export const requireUser = requireRole('user');
+export const requireAnyRole = requireRole(['user', 'admin']);

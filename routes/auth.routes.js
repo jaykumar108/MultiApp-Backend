@@ -1,13 +1,13 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const authController = require("../controller/auth.Controller");
-const { authMiddleware, requireAdmin, requireUser } = require("../Middleware/Auth");
-const { 
-  validateRegister, 
-  validateSendOTP, 
-  validateVerifyOTP, 
-  validateLogin 
-} = require("../validations/auth.validation");
+import * as authController from "../controller/auth.Controller.js";
+import { authMiddleware, requireAdmin, requireUser } from "../Middleware/Auth.js";
+import {
+  validateRegister,
+  validateSendOTP,
+  validateVerifyOTP,
+  validateLogin
+} from "../validations/auth.validation.js";
 
 // Public routes (no authentication required)
 router.post("/register", validateRegister, authController.register);
@@ -19,7 +19,5 @@ router.post("/login", validateLogin, authController.loginWithPassword);
 router.post("/logout", authMiddleware, authController.logout);
 router.get("/profile", authMiddleware, requireUser, authController.getProfile);
 router.get("/validate-token", authMiddleware, authController.validateToken);
-// Example: router.get("/profile", authMiddleware, requireUser, authController.getProfile);
-// Example: router.get("/admin/users", authMiddleware, requireAdmin, authController.getAllUsers);
 
-module.exports = router;
+export default router;

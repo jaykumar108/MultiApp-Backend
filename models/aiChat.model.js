@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const messageSchema = new mongoose.Schema({
   role: {
@@ -124,28 +124,28 @@ aiChatSchema.index({ conversationId: 1 });
 aiChatSchema.index({ 'messages.timestamp': -1 });
 
 // Virtual for message count
-aiChatSchema.virtual('messageCount').get(function() {
+aiChatSchema.virtual('messageCount').get(function () {
   return this.messages.length;
 });
 
 // Method to add a message
-aiChatSchema.methods.addMessage = function(role, content, metadata = {}) {
+aiChatSchema.methods.addMessage = function (role, content, metadata = {}) {
   const message = {
     role,
     content,
     timestamp: new Date(),
     ...metadata
   };
-  
+
   this.messages.push(message);
   this.analytics.totalMessages = this.messages.length;
   this.analytics.lastActivity = new Date();
-  
+
   return this.save();
 };
 
 // Method to get conversation summary
-aiChatSchema.methods.getSummary = function() {
+aiChatSchema.methods.getSummary = function () {
   return {
     conversationId: this.conversationId,
     title: this.title,
@@ -157,11 +157,11 @@ aiChatSchema.methods.getSummary = function() {
 };
 
 // Pre-save middleware to update analytics
-aiChatSchema.pre('save', function(next) {
+aiChatSchema.pre('save', function (next) {
   if (this.isModified('messages')) {
     this.analytics.totalMessages = this.messages.length;
     this.analytics.lastActivity = new Date();
-    
+
     // Calculate total tokens
     this.analytics.totalTokens = this.messages.reduce((total, msg) => {
       return total + (msg.tokens || 0);
@@ -172,7 +172,7 @@ aiChatSchema.pre('save', function(next) {
 
 const AiChat = mongoose.model('AiChat', aiChatSchema);
 
-module.exports = AiChat;
+export default AiChat;
 
 
 

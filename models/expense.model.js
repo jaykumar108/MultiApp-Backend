@@ -1,7 +1,7 @@
-const mongoose = require('mongoose'); 
+import mongoose from 'mongoose';
 
 const expenseSchema = new mongoose.Schema({
-    user:{
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: false
@@ -17,7 +17,7 @@ const expenseSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['food', 'transport','fuel', 'entertainment', 'shopping', 'bills', 'bikeservice' , 'other'],
+        enum: ['food', 'transport', 'fuel', 'entertainment', 'shopping', 'bills', 'bikeservice', 'other'],
         default: 'other',
         required: true
     },
@@ -28,7 +28,7 @@ const expenseSchema = new mongoose.Schema({
     },
     paymentMethod: {
         type: String,
-        enum: ['cash', 'upi', 'phonepe', 'naviupi','netbanking','debitcard','googlepay','other'],
+        enum: ['cash', 'upi', 'phonepe', 'naviupi', 'netbanking', 'debitcard', 'googlepay', 'other'],
         default: 'cash'
     },
     receipt: {
@@ -47,4 +47,4 @@ const expenseSchema = new mongoose.Schema({
 
 const Expense = mongoose.model('Expense', expenseSchema);
 
-module.exports = Expense;
+export default Expense;

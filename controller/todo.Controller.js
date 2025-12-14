@@ -1,7 +1,7 @@
-const Todo = require("../models/todo.model");
+import Todo from "../models/todo.model.js";
 
 // Create new todo
-exports.createTodo = async (req, res) => {
+export const createTodo = async (req, res) => {
   try {
     const { title, description, category, dueDate, priority, attachments, date } = req.body;
     const userId = req.user.id;
@@ -39,7 +39,7 @@ exports.createTodo = async (req, res) => {
 };
 
 // Get todos with filtering and pagination
-exports.getTodos = async (req, res) => {
+export const getTodos = async (req, res) => {
   try {
     const userId = req.user.id;
     const {
@@ -77,27 +77,27 @@ exports.getTodos = async (req, res) => {
     // Date filters
     if (year || month || date) {
       const dateFilter = {};
-      
+
       if (year) {
         dateFilter.$gte = new Date(parseInt(year), 0, 1);
         dateFilter.$lt = new Date(parseInt(year) + 1, 0, 1);
       }
-      
+
       if (month && year) {
         dateFilter.$gte = new Date(parseInt(year), parseInt(month) - 1, 1);
         dateFilter.$lt = new Date(parseInt(year), parseInt(month), 1);
       }
-      
+
       if (date) {
         const targetDate = new Date(date);
         targetDate.setHours(0, 0, 0, 0);
         const nextDate = new Date(targetDate);
         nextDate.setDate(nextDate.getDate() + 1);
-        
+
         dateFilter.$gte = targetDate;
         dateFilter.$lt = nextDate;
       }
-      
+
       filter.date = dateFilter;
     }
 
@@ -182,7 +182,7 @@ exports.getTodos = async (req, res) => {
 };
 
 // Get single todo by ID
-exports.getTodoById = async (req, res) => {
+export const getTodoById = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
@@ -205,7 +205,7 @@ exports.getTodoById = async (req, res) => {
 };
 
 // Update todo
-exports.updateTodo = async (req, res) => {
+export const updateTodo = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
@@ -232,7 +232,7 @@ exports.updateTodo = async (req, res) => {
 };
 
 // Delete todo
-exports.deleteTodo = async (req, res) => {
+export const deleteTodo = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
@@ -254,7 +254,7 @@ exports.deleteTodo = async (req, res) => {
 };
 
 // Toggle todo completion status
-exports.toggleTodoStatus = async (req, res) => {
+export const toggleTodoStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
@@ -281,7 +281,7 @@ exports.toggleTodoStatus = async (req, res) => {
 };
 
 // Get todo statistics
-exports.getTodoStats = async (req, res) => {
+export const getTodoStats = async (req, res) => {
   try {
     const userId = req.user.id;
     const { year, month } = req.query;
@@ -290,17 +290,17 @@ exports.getTodoStats = async (req, res) => {
     const dateFilter = { user: userId };
     if (year || month) {
       const dateRange = {};
-      
+
       if (year) {
         dateRange.$gte = new Date(parseInt(year), 0, 1);
         dateRange.$lt = new Date(parseInt(year) + 1, 0, 1);
       }
-      
+
       if (month && year) {
         dateRange.$gte = new Date(parseInt(year), parseInt(month) - 1, 1);
         dateRange.$lt = new Date(parseInt(year), parseInt(month), 1);
       }
-      
+
       dateFilter.date = dateRange;
     }
 

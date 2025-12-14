@@ -1,4 +1,4 @@
-const { z } = require("zod");
+import { z } from "zod";
 
 // Register validation schema
 const registerSchema = z.object({
@@ -96,9 +96,7 @@ const validateRequest = (schema) => {
   };
 };
 
-module.exports = {
-  validateRegister: validateRequest(registerSchema),
-  validateSendOTP: validateRequest(sendOTPSchema),
-  validateVerifyOTP: validateRequest(verifyOTPSchema),
-  validateLogin: validateRequest(loginSchema)
-};
+export const validateRegister = validateRequest(registerSchema);
+export const validateSendOTP = validateRequest(sendOTPSchema);
+export const validateVerifyOTP = validateRequest(verifyOTPSchema);
+export const validateLogin = validateRequest(loginSchema);

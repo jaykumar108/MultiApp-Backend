@@ -1,11 +1,11 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const authRoutes = require("./routes/auth.routes");
-const todoRoutes = require("./routes/todo.routes");
-const expenseRoutes = require("./routes/expense.routes");
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import authRoutes from "./routes/auth.routes.js";
+import todoRoutes from "./routes/todo.routes.js";
+import expenseRoutes from "./routes/expense.routes.js";
 
 // Load .env config
 dotenv.config();
@@ -15,10 +15,10 @@ const app = express();
 
 // Middleware
 // CORS configuration for frontend
-const corsOrigins = process.env.CORS_ORIGINS 
+const corsOrigins = process.env.CORS_ORIGINS
   ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
-  : process.env.NODE_ENV === 'production' 
-    ? ['http://localhost:5173'] 
+  : process.env.NODE_ENV === 'production'
+    ? ['http://localhost:5173']
     : ['http://localhost:3000'];
 
 app.use(cors({
@@ -33,7 +33,7 @@ app.use(cookieParser());
 // Error handling middleware for JSON parsing errors
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-    return res.status(400).json({ 
+    return res.status(400).json({
       message: "Invalid JSON format in request body",
       error: "Please check your JSON syntax"
     });

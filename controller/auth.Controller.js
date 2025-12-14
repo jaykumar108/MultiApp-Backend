@@ -1,16 +1,16 @@
-const User = require("../models/user.model");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const sendEmail = require("../services/auth.Email"); // nodemailer logic
+import User from "../models/user.model.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import sendEmail from "../services/auth.Email.js";
 
 // Register new user
-exports.register = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const { name, email, city, mobile, password, confirmPassword, role } = req.body;
-    
+
     // Validate required fields
     if (!name || !email || !city || !password || !confirmPassword) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: "Missing required fields",
         required: ["name", "email", "city", "password", "confirmPassword"]
       });
@@ -45,8 +45,8 @@ exports.register = async (req, res) => {
       role: role || 'user'
     });
 
-    res.status(201).json({ 
-      message: "User registered successfully", 
+    res.status(201).json({
+      message: "User registered successfully",
       userId: user._id,
       user: {
         name: user.name,
@@ -62,7 +62,7 @@ exports.register = async (req, res) => {
 };
 
 // Send OTP to email
-exports.sendOTP = async (req, res) => {
+export const sendOTP = async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -91,13 +91,13 @@ exports.sendOTP = async (req, res) => {
 };
 
 // Verify OTP and login
-exports.verifyOTP = async (req, res) => {
+export const verifyOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
     // Validate required fields
     if (!email || !otp) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: "Email and OTP are required",
         required: ["email", "otp"]
       });
@@ -133,8 +133,8 @@ exports.verifyOTP = async (req, res) => {
       path: '/'
     });
 
-    res.status(200).json({ 
-      message: "Login successful", 
+    res.status(200).json({
+      message: "Login successful",
       user: {
         id: user._id,
         name: user.name,
@@ -150,13 +150,13 @@ exports.verifyOTP = async (req, res) => {
 };
 
 // Login with password
-exports.loginWithPassword = async (req, res) => {
+export const loginWithPassword = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     // Validate required fields
     if (!email || !password) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: "Email and password are required",
         required: ["email", "password"]
       });
@@ -181,8 +181,8 @@ exports.loginWithPassword = async (req, res) => {
       path: '/'
     });
 
-    res.status(200).json({ 
-      message: "Login successful", 
+    res.status(200).json({
+      message: "Login successful",
       user: {
         id: user._id,
         name: user.name,
@@ -198,7 +198,7 @@ exports.loginWithPassword = async (req, res) => {
 };
 
 // Logout user
-exports.logout = async (req, res) => {
+export const logout = async (req, res) => {
   try {
     // Clear the token cookie
     res.clearCookie('token', {
@@ -216,7 +216,7 @@ exports.logout = async (req, res) => {
 };
 
 // Get user profile
-exports.getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password -otp');
     if (!user) {
@@ -240,7 +240,7 @@ exports.getProfile = async (req, res) => {
 
 
 // Validate token and return user details
-exports.validateToken = async (req, res) => {
+export const validateToken = async (req, res) => {
   try {
     // req.user is set by authMiddleware
     const user = await User.findById(req.user.id).select('-password -otp');
