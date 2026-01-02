@@ -4,8 +4,8 @@ import * as expenseController from '../controller/expense.controller.js';
 import { authToken, requireUser } from "../Middleware/Auth.js";
 
 // All routes require authentication
-// router.use(authToken);
-// router.use(requireUser);
+router.use(authToken);
+router.use(requireUser);
 
 // Create expense
 router.post('/create', expenseController.createExpense);
